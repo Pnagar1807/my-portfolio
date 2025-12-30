@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Hero = () => {
+  // Scroll function
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
     }
   };
+
+  // Image error state
+  const [imageError, setImageError] = useState(false);
+
+  // Resume download function
+  const downloadResume = () => {
+  window.open('https://drive.google.com/file/d/1oz9HQlZwqi2-RxXVgleERaA7DZZI1Idf/view?usp=drivesdk', '_blank');
+};
 
   return (
     <section id="home" className="hero">
@@ -23,17 +35,23 @@ const Hero = () => {
             to bring ideas to life.
           </p>
           <div className="hero-buttons">
-            <button className="btn btn-primary" onClick={() => scrollToSection('projects')}>
+            <button 
+              className="btn btn-primary" 
+              onClick={() => scrollToSection('projects')}
+            >
               <span className="btn-icon">🚀</span>
               View Projects
             </button>
-            <button className="btn btn-secondary" onClick={() => scrollToSection('contact')}>
-              <span className="btn-icon">💼</span>
-              Hire Me
+            <button 
+              className="btn btn-secondary" 
+              onClick={downloadResume}
+            >
+              <span className="btn-icon">📄</span>
+              Download Resume
             </button>
           </div>
           
-          {/* Tech Stack Icons */}
+          {/* Tech Stack */}
           <div className="tech-stack">
             <div className="tech-item">
               <span className="tech-icon-small">⚛️</span>
@@ -51,12 +69,20 @@ const Hero = () => {
               <span className="tech-icon-small">⚡</span>
               <span>Express</span>
             </div>
+            <div className="tech-item">
+              <span className="tech-icon-small">🎨</span>
+              <span>Tailwind</span>
+            </div>
+            <div className="tech-item">
+              <span className="tech-icon-small">🐙</span>
+              <span>Git</span>
+            </div>
           </div>
         </div>
         
+        {/* PROFILE IMAGE SECTION */}
         <div className="hero-image">
           <div className="profile-container">
-            {/* Modern Profile Image Design */}
             <div className="profile-card">
               <div className="profile-shape">
                 {/* Gradient Background */}
@@ -67,24 +93,26 @@ const Hero = () => {
                 <div className="ring ring-2"></div>
                 <div className="ring ring-3"></div>
                 
-                {/* Your Photo - Use this if you have an image */}
-                <div className="profile-photo-container">
-                  <img 
-                    src="/images/pavan.png" 
-                    alt="Pawan Nagar"
-                    className="profile-photo"
-                    onError={(e) => {
-                      // If image fails to load, show initials instead
-                      e.target.style.display = 'none';
-                      document.querySelector('.profile-initials').style.display = 'flex';
-                    }}
-                  />
-                  
-                  {/* Initials (shown if image doesn't load) */}
-                  <div className="profile-initials" style={{display: 'none'}}>
-                    <span className="initial-p">P</span>
-                    <span className="initial-n">N</span>
-                  </div>
+                {/* IMAGE CONTAINER  */}
+                <div className="profile-image-container">
+                  {imageError ? (
+                    // Fallback initials if image fails
+                    <div className="profile-initials-fallback">
+                      <span className="initial-p">P</span>
+                      <span className="initial-n">N</span>
+                    </div>
+                  ) : (
+                    <img 
+                      src="/images/pawan.png" 
+                      alt="Pawan Nagar"
+                      className="profile-photo"
+                      onError={() => {
+                        console.log('Image failed to load, showing initials');
+                        setImageError(true);
+                      }}
+                      onLoad={() => console.log('✅ Profile image loaded successfully')}
+                    />
+                  )}
                 </div>
                 
                 {/* Tech Icons Around */}
@@ -114,6 +142,16 @@ const Hero = () => {
                   <span className="availability-dot"></span>
                   <span className="availability-text">Available for Opportunities</span>
                 </div>
+                {/* Resume Download Link in Badge */}
+                <div className="resume-link">
+                  <a 
+                    href="#!" 
+                    onClick={downloadResume}
+                    className="resume-download-link"
+                  >
+                    <span>📄 Download Resume</span>
+                  </a>
+                </div>
               </div>
             </div>
             
@@ -122,7 +160,7 @@ const Hero = () => {
               <div className="float-1"></div>
               <div className="float-2"></div>
               <div className="float-3"></div>
-              <div className="float-4"></div>
+              <div className="float-2"></div>
             </div>
           </div>
         </div>
